@@ -1,0 +1,24 @@
+
+version: '3.4'
+services:
+  # API
+  league-api:
+    build:
+      context: ./
+      target: develop
+    ports:
+      - '9000:80'
+    env_file: ./.env
+    volumes:
+      - /code/node_modules
+      - ./:/code
+    depends_on:
+      - league-postgres
+    command: yarn dev
+
+  # DATABASE
+  league-postgres:
+    image: postgres
+    env_file: ./.postgres.env
+    ports:
+      - 5434:5432

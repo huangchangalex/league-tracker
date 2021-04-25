@@ -5,12 +5,24 @@
   "author": "Quinn Langille",
   "license": "MIT",
   "dependencies": {
+    "@prisma/client": "2.21.2",
+    "apollo-server": "^2.23.0",
     "axios": "^0.21.1",
+    "graphql": "^15.5.0",
     "lodash": "^4.17.21",
     "ts-node": "^9.1.1",
     "typescript": "^4.2.4"
   },
+  "scripts": {
+    "build": "tsc",
+    "dev": "yarn ts-node src/index.ts",
+    "format": "prettier -w src",
+    "ingest": "yarn ts-node src/ingest/ingestMatches.ts"
+  },
   "devDependencies": {
-    "@types/lodash": "^4.14.168"
+    "@types/lodash": "^4.14.168",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.2.1",
+    "prisma": "2.21.2"
   }
 }
