@@ -1,5 +1,4 @@
 import { Player, PrismaClient } from '@prisma/client';
-import { update } from 'lodash';
 
 interface PlayerData {
     name: string,

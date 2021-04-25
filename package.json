@@ -17,7 +17,7 @@
     "build": "tsc",
     "dev": "yarn ts-node src/index.ts",
     "format": "prettier -w src",
-    "ingest": "yarn ts-node src/ingest/ingestMatches.ts"
+    "ingest": "yarn ts-node src/ingest/ingestPlayerData.ts"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.168",
