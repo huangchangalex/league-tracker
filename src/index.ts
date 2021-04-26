@@ -8,7 +8,7 @@ const typeDefs = `
     id: Int
     name: String
     puuid: String
-    Team: Team
+    Team: [Team!]
   }
   type Team {
     id: Int
@@ -30,15 +30,29 @@ const typeDefs = `
 
 const resolvers = {
   Query: {
-    players: () => {
-      return prisma.player.findMany();
+    players: async () => {
+      return prisma.player.findMany({
+        select: {
+          id: true,
+          puuid: true,
+          Team: {
+            include: {
+              players: true
+            }
+          }
+        }
+      });
     },
     matches: () => {
       return prisma.matches.findMany({
         include: {
           team: {
             include: {
-              players: true,
+              players: {
+                include: {
+                  Team: true,
+                }
+              },
             },
           },
         },
@@ -48,7 +62,11 @@ const resolvers = {
       return prisma.team.findMany({
         select: {
           id: true,
-          players: true,
+          players: {
+            include: {
+              Team: true,
+            }
+          },
         },
       });
     },

@@ -29,6 +29,9 @@ const makeClient = () => {
 export const createPlayer = async (playerInfo: PlayerData) => {
     console.log(`Creating player ${playerInfo.name}`)
     return makeClient().player.upsert({
+        include: {
+            Team: true
+        },
         where: {
             name: playerInfo.name,
         },
@@ -72,13 +75,12 @@ export const upsertMatch = async (matchInfo: MatchData, teamId: number) => {
 
 export const upsertTeam = async (teamInfo: TeamData) => {
     console.log(`Creating team...`)
-    const players: any[] = teamInfo.players;
+    const players = teamInfo.players;
     return await makeClient().team.upsert({
         where: {
-            id: teamInfo.id,
+            id: teamInfo.id || 0,
         },
         update: {
-            winRate: 0,
             players: {
                 connectOrCreate: players.map((player) => ({
                     where: {
@@ -86,13 +88,13 @@ export const upsertTeam = async (teamInfo: TeamData) => {
                     },
                     create: {
                         name: player.name,
-                        puuid: player.puuid
+                        puuid: player.puuid,
+                        teamId: { set: [teamInfo.id] }
                     }
                 })),
             },
         },
         create: {
-            winRate: 0,
             players: {
                 connectOrCreate: players.map((player) => ({
                     where: {
@@ -100,21 +102,11 @@ export const upsertTeam = async (teamInfo: TeamData) => {
                     },
                     create: {
                         name: player.name,
-                        puuid: player.puuid
+                        puuid: player.puuid,
+                        teamId: { set: [teamInfo.id] }
                     }
                 })),
             },
-        }
-    })
-}
-
-export const updateTeamWinRate = async (teamId: number, winRate: number) => {
-    await makeClient().team.update({
-        data: {
-            winRate,
-        },
-        where: {
-            id: teamId
         }
     })
 }

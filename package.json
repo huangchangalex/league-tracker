@@ -15,9 +15,9 @@
   },
   "scripts": {
     "build": "tsc",
-    "dev": "yarn ts-node src/index.ts",
+    "dev": "nodemon --watch './src/**/*' --ext '.ts' --exec 'ts-node src/index.ts'",
     "format": "prettier -w src",
-    "ingest": "yarn ts-node src/ingest/ingestPlayerData.ts"
+    "ingest": "ts-node src/ingest/ingestPlayerData.ts"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.168",

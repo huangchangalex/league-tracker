@@ -30,8 +30,12 @@ const getFiveStackInfo = async (names: string[]) => {
 
     // If all members have the same teamID then update their existing team,
     // if any members have a different teamID, then assign them to a new team
-    const id = players.reduce((acc, player) => player.teamId === acc ? player.teamId : 0, players[0].teamId || 0)
-    const team = await upsertTeam({ players, id })
+    const teamId = players.reduce((acc: number[], player) => {
+        const indexOfTeam = intersection(acc, player.Team.map(({id}) => id));
+        return indexOfTeam.length ? indexOfTeam : [0]
+    }, players[0].Team.map(({id}) => id))
+
+    const team = await upsertTeam({ players, id: teamId[0] })
 
     const matches = await Promise.all(players.map(async (player) => {
         return getMatchesByPlayerId(player.puuid)
@@ -78,5 +82,6 @@ const formatMatchInfo = (matches: any[], players: string[]) => {
         process.exit(0)
     } catch (e) {
         console.log(e)
+        process.exit(1)
     }
 })()

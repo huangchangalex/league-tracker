@@ -12,7 +12,6 @@ generator client {
 
 model Team {
   id      Int       @id @default(autoincrement())
-  winRate Int
   Matches Matches[]
   players Player[]
 }
@@ -21,8 +20,8 @@ model Player {
   id     Int    @id @default(autoincrement())
   name   String @unique
   puuid  String @unique
-  Team   Team?  @relation(fields: [teamId], references: [id])
-  teamId Int?
+  Team   Team[] @relation(fields: [teamId], references: [id])
+  teamId Int[]
 }
 
 model Matches {
